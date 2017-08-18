@@ -31,4 +31,11 @@
     <dimen name="text_big">40sp</dimen>
     <dimen name="text_big_2x">60sp</dimen>
     <dimen name="text_big_3x">80sp</dimen>
+
+    <dimen name="list_item_bottom_spacing">4dp</dimen>
+    <dimen name="list_item_right_spacing">8dp</dimen>
+    <dimen name="empty_favourite_text_padding">32dp</dimen>
+    <dimen name="bg_dialog_button_radius">4dp</dimen>
+    <dimen name="news_feed_profile_size">60dp</dimen>
+    <dimen name="elevation_card">4dp</dimen>
 </resources>

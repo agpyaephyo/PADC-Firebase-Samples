@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <xyz.aungpyaephyo.padc.firebase.components.loveanim.DotsView
+        android:id="@+id/vDotsView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center" />
+
+    <xyz.aungpyaephyo.padc.firebase.components.loveanim.CircleView
+        android:id="@+id/vCircle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:padding="@dimen/margin_xlarge"
+        />
+
+    <ImageView
+        android:id="@+id/ivStar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:padding="@dimen/margin_card_medium_2"
+        android:src="@drawable/ic_love_border_24dp" />
+
+</merge>

@@ -20,19 +20,21 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <RelativeLayout
+    <xyz.aungpyaephyo.padc.firebase.components.rvset.SmartRecyclerView
+        android:id="@+id/rv_news_feed"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:clipToPadding="false"
+        android:padding="@dimen/margin_card_medium"
+        android:scrollbarStyle="outsideOverlay"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="News from the people"
-            android:layout_margin="@dimen/margin_medium_2"
-            />
-
-    </RelativeLayout>
+    <include
+        android:id="@+id/vp_empty_news_feed"
+        layout="@layout/view_pod_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -40,6 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@drawable/ic_create_new"
+        />
 
 </android.support.design.widget.CoordinatorLayout>

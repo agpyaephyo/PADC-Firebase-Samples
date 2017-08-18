@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:foreground="@drawable/ripple_primary"
+    card_view:cardElevation="@dimen/elevation_card"
+    card_view:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_full">
+
+        <ImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="@dimen/news_feed_profile_size"
+            android:layout_height="@dimen/news_feed_profile_size"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:src="@mipmap/ic_news_from_people" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/iv_profile"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_toRightOf="@id/iv_profile"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/launcher_name"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/text_regular" />
+
+        <xyz.aungpyaephyo.padc.firebase.components.mmfont.components.MMTextView
+            android:id="@+id/tv_posted_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_user_name"
+            android:layout_below="@id/tv_user_name"
+            android:layout_marginTop="@dimen/margin_small"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/tv_format_posted_date"
+            android:textColor="@color/secondary_text"
+            android:textSize="@dimen/text_small" />
+
+        <xyz.aungpyaephyo.padc.firebase.components.mmfont.components.MMTextView
+            android:id="@+id/tv_feed_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/iv_profile"
+            android:layout_below="@id/iv_profile"
+            android:layout_marginRight="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:lineSpacingMultiplier="1.2"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/text_regular"
+            android:text="@string/dummpy_news"
+            android:maxLines="8"
+            android:ellipsize="end"
+            />
+
+        <ImageView
+            android:id="@+id/iv_feed_image"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_below="@id/tv_feed_msg"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_medium_2"
+            android:src="@drawable/placeholder_news_two" />
+
+        <xyz.aungpyaephyo.padc.firebase.components.mmfont.components.MMTextView
+            android:id="@+id/tv_total_reactions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_feed_image"
+            android:paddingLeft="@dimen/margin_medium"
+            android:text="3 Likes 4 Comments"
+            android:textColor="@color/primary_dark"
+            android:textSize="@dimen/text_small" />
+
+        <LinearLayout
+            android:id="@+id/ll_feed_actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_total_reactions"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/fl_feed_comment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:foreground="@drawable/ripple_primary"
+                android:paddingBottom="@dimen/margin_small"
+                android:paddingTop="@dimen/margin_small"
+                android:visibility="visible">
+
+                <xyz.aungpyaephyo.padc.firebase.components.mmfont.components.MMTextView
+                    android:id="@+id/tv_feed_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/ic_chat_bubble_outline_24dp"
+                    android:drawablePadding="@dimen/margin_medium"
+                    android:drawableTint="@color/primary_dark"
+                    android:fontFamily="sans-serif-condensed"
+                    android:padding="@dimen/margin_medium"
+                    android:text="@string/feed_action_comment"
+                    android:textColor="@color/primary_dark"
+                    android:gravity="center_vertical"
+                    />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fl_feed_send"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:foreground="@drawable/ripple_primary"
+                android:paddingBottom="@dimen/margin_small"
+                android:paddingTop="@dimen/margin_small"
+                android:visibility="visible">
+
+                <xyz.aungpyaephyo.padc.firebase.components.mmfont.components.MMTextView
+                    android:id="@+id/tv_feed_send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif-condensed"
+                    android:padding="@dimen/margin_medium"
+                    android:drawableLeft="@drawable/ic_send_24dp"
+                    android:drawablePadding="@dimen/margin_medium"
+                    android:drawableTint="@color/primary_dark"
+                    android:text="@string/feed_action_send"
+                    android:textColor="@color/primary_dark"
+                    android:gravity="center_vertical"
+                    />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_right_edge"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true" />
+
+        <xyz.aungpyaephyo.padc.firebase.components.loveanim.LoveAnimView
+            android:id="@+id/iv_feed_love"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_toLeftOf="@id/v_right_edge"
+            android:src="@drawable/ic_love_border_24dp"
+            />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

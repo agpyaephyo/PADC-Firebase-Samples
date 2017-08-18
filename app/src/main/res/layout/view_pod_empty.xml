@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xyz.aungpyaephyo.padc.firebase.views.pods.EmptyViewPod xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical">
+
+    <xyz.aungpyaephyo.padc.firebase.components.mmfont.components.MMTextView
+        android:id="@+id/lbl_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.2"
+        android:paddingLeft="@dimen/empty_favourite_text_padding"
+        android:paddingRight="@dimen/empty_favourite_text_padding"
+        android:text="@string/msg_default_empty"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/text_regular"
+        />
+
+    <ImageView
+        android:id="@+id/iv_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/lbl_empty"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_medium_2"
+        android:src="@drawable/placeholder_empty_data"
+        />
+
+    <xyz.aungpyaephyo.padc.firebase.components.mmfont.components.MMButton
+        android:id="@+id/btn_action_for_empty"
+        style="@style/AccentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lbl_empty"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_medium_2"
+        android:visibility="gone"
+        />
+
+</xyz.aungpyaephyo.padc.firebase.views.pods.EmptyViewPod>
