@@ -57,7 +57,7 @@
             android:lineSpacingMultiplier="1.2"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/text_regular"
-            android:text="@string/dummpy_news"
+            android:text="@string/dummy_news"
             android:maxLines="8"
             android:ellipsize="end"
             />
@@ -77,9 +77,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/iv_feed_image"
             android:paddingLeft="@dimen/margin_medium"
-            android:text="3 Likes 4 Comments"
+            android:text="3 Likes - 4 Comments - Sent to 21 people"
             android:textColor="@color/primary_dark"
-            android:textSize="@dimen/text_small" />
+            android:fontFamily="sans-serif-condensed"
+            android:textSize="@dimen/text_regular" />
 
         <LinearLayout
             android:id="@+id/ll_feed_actions"

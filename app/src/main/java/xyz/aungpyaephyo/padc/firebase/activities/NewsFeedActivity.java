@@ -8,12 +8,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import xyz.aungpyaephyo.padc.firebase.R;
 import xyz.aungpyaephyo.padc.firebase.adapters.NewsFeedsAdapter;
 import xyz.aungpyaephyo.padc.firebase.components.rvset.SmartRecyclerView;
+import xyz.aungpyaephyo.padc.firebase.data.models.NewsFeedModel;
+import xyz.aungpyaephyo.padc.firebase.data.vo.NewsFeedVO;
 import xyz.aungpyaephyo.padc.firebase.views.pods.EmptyViewPod;
 
 public class NewsFeedActivity extends AppCompatActivity {
@@ -42,6 +46,9 @@ public class NewsFeedActivity extends AppCompatActivity {
         rvNewsFeed.setAdapter(mNewsFeedsAdapter);
 
         rvNewsFeed.setEmptyView(vpEmptyNewsFeed);
+
+        List<NewsFeedVO> newsFeed = NewsFeedModel.getInstance().getSampleNewsFeed(getApplicationContext());
+        mNewsFeedsAdapter.setNewData(newsFeed);
     }
 
     @Override

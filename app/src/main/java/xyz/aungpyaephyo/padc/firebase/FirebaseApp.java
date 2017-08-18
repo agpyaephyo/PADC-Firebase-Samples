@@ -7,4 +7,9 @@ import android.app.Application;
  */
 
 public class FirebaseApp extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
 }
