@@ -26,11 +26,6 @@ public class NewsFeedsAdapter extends BaseRecyclerAdapter<NewsFeedViewHolder, Ne
 
     @Override
     public void onBindViewHolder(NewsFeedViewHolder holder, int position) {
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return 16;
+        holder.bind(mData.get(position));
     }
 }
