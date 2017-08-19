@@ -10,4 +10,8 @@ public class FirebaseAppConstants {
     public static final String UPLOAD_IMAGE_PATH = "images";
 
     public static final String VENDOR_XIAOMI = "Xiaomi";
+
+    public static final String RC_NEWS_FEED_LAYOUT = "news_feed_layout";
+    public static final int NEWS_FEED_LAYOUT_ONE = 1;
+    public static final int NEWS_FEED_LAYOUT_TWO = 2;
 }

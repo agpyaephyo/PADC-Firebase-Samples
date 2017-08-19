@@ -90,6 +90,34 @@
             android:orientation="horizontal">
 
             <FrameLayout
+                android:id="@+id/fl_feed_love"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:foreground="@drawable/ripple_primary"
+                android:paddingBottom="@dimen/margin_small"
+                android:paddingTop="@dimen/margin_small"
+                android:visibility="gone">
+
+                <xyz.aungpyaephyo.padc.firebase.components.mmfont.components.MMTextView
+                    android:id="@+id/tv_feed_love"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/ic_love_border_24dp"
+                    android:drawablePadding="@dimen/margin_medium"
+                    android:drawableTint="@color/primary_dark"
+                    android:fontFamily="sans-serif-condensed"
+                    android:padding="@dimen/margin_medium"
+                    android:text="@string/feed_action_love"
+                    android:textColor="@color/primary_dark"
+                    android:gravity="center_vertical"
+                    />
+
+            </FrameLayout>
+
+            <FrameLayout
                 android:id="@+id/fl_feed_comment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -160,6 +188,7 @@
             android:layout_height="60dp"
             android:layout_toLeftOf="@id/v_right_edge"
             android:src="@drawable/ic_love_border_24dp"
+            android:visibility="gone"
             />
 
     </RelativeLayout>

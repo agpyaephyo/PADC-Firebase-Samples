@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import xyz.aungpyaephyo.padc.firebase.FirebaseApp;
@@ -98,6 +100,19 @@ public class NewsFeedModel {
                         NewsFeedVO newsFeed = snapshot.getValue(NewsFeedVO.class);
                         newsFeedList.add(newsFeed);
                     }
+
+                    Collections.sort(newsFeedList, new Comparator<NewsFeedVO>() {
+                        @Override
+                        public int compare(NewsFeedVO nf1, NewsFeedVO nf2) {
+                            if (nf1.getPosedDate() > nf2.getPosedDate())
+                                return 1;
+                            else if (nf1.getPosedDate() < nf2.getPosedDate())
+                                return -1;
+
+                            return 0;
+                        }
+                    });
+
                     FirebaseEvents.NewsFeedLoadedEvent event = new FirebaseEvents.NewsFeedLoadedEvent(newsFeedList);
                     EventBus.getDefault().post(event);
                 }

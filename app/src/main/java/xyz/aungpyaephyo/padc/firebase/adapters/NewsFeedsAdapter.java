@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import xyz.aungpyaephyo.padc.firebase.R;
 import xyz.aungpyaephyo.padc.firebase.data.vo.NewsFeedVO;
+import xyz.aungpyaephyo.padc.firebase.utils.FirebaseAppConstants;
 import xyz.aungpyaephyo.padc.firebase.views.holders.NewsFeedViewHolder;
 
 /**
@@ -14,18 +15,26 @@ import xyz.aungpyaephyo.padc.firebase.views.holders.NewsFeedViewHolder;
 
 public class NewsFeedsAdapter extends BaseRecyclerAdapter<NewsFeedViewHolder, NewsFeedVO> {
 
+    private int mLayoutOption;
+
     public NewsFeedsAdapter(Context context) {
         super(context);
+        mLayoutOption = FirebaseAppConstants.NEWS_FEED_LAYOUT_ONE;
     }
 
     @Override
     public NewsFeedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mLayoutInflater.inflate(R.layout.view_holder_news_feed, parent, false);
-        return new NewsFeedViewHolder(view);
+        return new NewsFeedViewHolder(view, mLayoutOption);
     }
 
     @Override
     public void onBindViewHolder(NewsFeedViewHolder holder, int position) {
         holder.bind(mData.get(position));
+    }
+
+    public void setNewsFeedLayout(int layoutOption) {
+        mLayoutOption = layoutOption;
+        notifyDataSetChanged();
     }
 }

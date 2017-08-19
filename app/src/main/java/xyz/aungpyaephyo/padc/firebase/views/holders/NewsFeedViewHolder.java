@@ -1,6 +1,7 @@
 package xyz.aungpyaephyo.padc.firebase.views.holders;
 
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ import butterknife.BindView;
 import xyz.aungpyaephyo.padc.firebase.R;
 import xyz.aungpyaephyo.padc.firebase.components.loveanim.LoveAnimView;
 import xyz.aungpyaephyo.padc.firebase.data.vo.NewsFeedVO;
+import xyz.aungpyaephyo.padc.firebase.utils.FirebaseAppConstants;
 
 /**
  * Created by aung on 8/18/17.
@@ -43,12 +45,20 @@ public class NewsFeedViewHolder extends BaseViewHolder<NewsFeedVO> {
     @BindView(R.id.iv_feed_love)
     LoveAnimView vFeedLove;
 
-    public NewsFeedViewHolder(View itemView) {
+    @BindView(R.id.fl_feed_love)
+    FrameLayout flFeedLove;
+
+    private int mLayoutOption;
+
+    public NewsFeedViewHolder(View itemView, int layoutOption) {
         super(itemView);
+        mLayoutOption = layoutOption;
     }
 
     @Override
     public void bind(NewsFeedVO data) {
+        applyLayoutOption();
+
         tvUsername.setText(data.getNewsAuthor().getUserName());
 
         long ms = data.getPosedDate() * 1000;
@@ -80,5 +90,19 @@ public class NewsFeedViewHolder extends BaseViewHolder<NewsFeedVO> {
     @Override
     public void onClick(View view) {
 
+    }
+
+    private void resetLayoutOption() {
+        vFeedLove.setVisibility(View.GONE);
+        flFeedLove.setVisibility(View.GONE);
+    }
+
+    private void applyLayoutOption() {
+        resetLayoutOption();
+        if (mLayoutOption == FirebaseAppConstants.NEWS_FEED_LAYOUT_ONE) {
+            vFeedLove.setVisibility(View.VISIBLE);
+        } else if (mLayoutOption == FirebaseAppConstants.NEWS_FEED_LAYOUT_TWO) {
+            flFeedLove.setVisibility(View.VISIBLE);
+        }
     }
 }

@@ -17,7 +17,18 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <xyz.aungpyaephyo.padc.firebase.components.LobsterRegularTextView
+                android:id="@+id/tv_screen_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/launcher_name"
+                android:textColor="@color/white_full"
+                android:textSize="@dimen/text_regular_3x" />
+
+        </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 

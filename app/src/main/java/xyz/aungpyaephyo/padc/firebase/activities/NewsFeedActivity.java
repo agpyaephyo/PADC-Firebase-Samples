@@ -7,12 +7,15 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -20,10 +23,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,6 +44,7 @@ import xyz.aungpyaephyo.padc.firebase.adapters.NewsFeedsAdapter;
 import xyz.aungpyaephyo.padc.firebase.components.rvset.SmartRecyclerView;
 import xyz.aungpyaephyo.padc.firebase.data.models.NewsFeedModel;
 import xyz.aungpyaephyo.padc.firebase.events.FirebaseEvents;
+import xyz.aungpyaephyo.padc.firebase.utils.FirebaseAppConstants;
 import xyz.aungpyaephyo.padc.firebase.views.pods.EmptyViewPod;
 
 public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -49,6 +60,9 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.tv_screen_title)
+    TextView tvScreenTitle;
+
     @BindView(R.id.rv_news_feed)
     SmartRecyclerView rvNewsFeed;
 
@@ -61,6 +75,7 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
     private NewsFeedsAdapter mNewsFeedsAdapter;
 
     protected GoogleApiClient mGoogleApiClient;
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, NewsFeedActivity.class);
@@ -86,8 +101,15 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
         setContentView(R.layout.activity_news_feed);
         ButterKnife.bind(this, this);
 
-        toolbar.setTitle(getString(R.string.screen_title_newsfeed));
+        initRemoteConfig();
+        fetchRemoteConfig();
+
+        tvScreenTitle.setText(getString(R.string.screen_title_newsfeed));
         setSupportActionBar(toolbar);
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
 
         mNewsFeedsAdapter = new NewsFeedsAdapter(getApplicationContext());
         rvNewsFeed.setAdapter(mNewsFeedsAdapter);
@@ -241,5 +263,59 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
         notificationManager.cancel(notificationID);
     }
 
+    private void initRemoteConfig() {
+        // Initialize Firebase Remote Config.
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
 
+        // Define Firebase Remote Config Settings.
+        FirebaseRemoteConfigSettings firebaseRemoteConfigSettings =
+                new FirebaseRemoteConfigSettings.Builder()
+                        .setDeveloperModeEnabled(true)
+                        .build();
+
+        // Define default config values. Defaults are used when fetched config values are not
+        // available. Eg: if an error occurred fetching values from the server.
+        Map<String, Object> defaultConfigMap = new HashMap<>();
+        defaultConfigMap.put(FirebaseAppConstants.RC_NEWS_FEED_LAYOUT, 1);
+
+        // Apply config settings and default values.
+        mFirebaseRemoteConfig.setConfigSettings(firebaseRemoteConfigSettings);
+        mFirebaseRemoteConfig.setDefaults(defaultConfigMap);
+    }
+
+    private void fetchRemoteConfig() {
+        long cacheExpiration = 3600; // 1 hour in seconds
+        // If developer mode is enabled reduce cacheExpiration to 0 so that
+        // each fetch goes to the server. This should not be used in release
+        // builds.
+        if (mFirebaseRemoteConfig.getInfo().getConfigSettings()
+                .isDeveloperModeEnabled()) {
+            cacheExpiration = 0;
+        }
+        mFirebaseRemoteConfig.fetch(cacheExpiration)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Make the fetched config available via
+                        // FirebaseRemoteConfig get<type> calls.
+                        mFirebaseRemoteConfig.activateFetched();
+                        applyRetrievedLengthLimit();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // There has been an error fetching the config
+                        Log.d(FirebaseApp.TAG, "Error fetching config: " +
+                                e.getMessage());
+                        applyRetrievedLengthLimit();
+                    }
+                });
+    }
+
+    private void applyRetrievedLengthLimit() {
+        Long newsFeedLayout = mFirebaseRemoteConfig.getLong(FirebaseAppConstants.RC_NEWS_FEED_LAYOUT);
+        mNewsFeedsAdapter.setNewsFeedLayout(newsFeedLayout.intValue());
+        Log.d(FirebaseApp.TAG, "newsFeedLayout : " + newsFeedLayout);
+    }
 }
