@@ -28,6 +28,19 @@
                 android:textColor="@color/white_full"
                 android:textSize="@dimen/text_regular_3x" />
 
+            <ImageView
+                android:id='@+id/iv_invite_to_app'
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_invite_to_app"
+                android:tint="@color/white_ish"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="@dimen/margin_card_medium_2_n"
+                android:padding="@dimen/margin_small"
+                android:foreground="@drawable/ripple_white"
+                android:clickable="true"
+                />
+
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>

@@ -10,13 +10,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputFilter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.appinvite.AppInvite;
+import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -47,9 +48,11 @@ import xyz.aungpyaephyo.padc.firebase.events.FirebaseEvents;
 import xyz.aungpyaephyo.padc.firebase.utils.FirebaseAppConstants;
 import xyz.aungpyaephyo.padc.firebase.views.pods.EmptyViewPod;
 
-public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class NewsFeedActivity extends AppCompatActivity
+        implements GoogleApiClient.OnConnectionFailedListener {
 
     protected static final int RC_GOOGLE_SIGN_IN = 1236;
+    protected static final int RC_INVITE_TO_APP = 1237;
 
     private static final String IE_NOTIFICATION_ID = "IE_NOTIFICATION_ID";
     private static final String IE_LAUNCH_ACTION = "IE_LAUNCH_ACTION";
@@ -131,6 +134,7 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
         mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
                 .enableAutoManage(this /*FragmentActivity*/, this /*OnConnectionFailedListener*/)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
+                .addApi(AppInvite.API)
                 .build();
 
         Bundle bundle = getIntent().getExtras();
@@ -182,6 +186,17 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
         if (requestCode == RC_GOOGLE_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             processGoogleSignInResult(result);
+        } else if (requestCode == RC_INVITE_TO_APP) {
+            if (resultCode == RESULT_OK) {
+                // Check how many invitations were sent and log.
+                String[] ids = AppInviteInvitation.getInvitationIds(resultCode, data);
+                Log.d(FirebaseApp.TAG, "Invitations sent: " + ids.length);
+                Snackbar.make(rvNewsFeed, "Invitations sent to " + ids.length + " friends", Snackbar.LENGTH_SHORT).show();
+            } else {
+                // Sending failed or it was canceled, show failure message to the user
+                Log.d(FirebaseApp.TAG, "Failed to send invitation.");
+                Snackbar.make(rvNewsFeed, "Failed to send invitation.", Snackbar.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -200,7 +215,7 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        Log.d(FirebaseApp.TAG, "mGoogleApiClient - onConnectionFailed : " + connectionResult);
     }
 
     @OnClick(R.id.fab)
@@ -217,6 +232,11 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
                 }
             }).show();
         }
+    }
+
+    @OnClick(R.id.iv_invite_to_app)
+    public void onTapInviteToApp(View view) {
+        sendInvitation();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -317,5 +337,13 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
         Long newsFeedLayout = mFirebaseRemoteConfig.getLong(FirebaseAppConstants.RC_NEWS_FEED_LAYOUT);
         mNewsFeedsAdapter.setNewsFeedLayout(newsFeedLayout.intValue());
         Log.d(FirebaseApp.TAG, "newsFeedLayout : " + newsFeedLayout);
+    }
+
+    private void sendInvitation() {
+        Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
+                .setMessage(getString(R.string.invitation_message))
+                .setCallToActionText(getString(R.string.invitation_cta))
+                .build();
+        startActivityForResult(intent, RC_INVITE_TO_APP);
     }
 }
