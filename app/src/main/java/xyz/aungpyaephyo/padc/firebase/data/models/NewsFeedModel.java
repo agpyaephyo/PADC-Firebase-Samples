@@ -138,6 +138,11 @@ public class NewsFeedModel {
                 });
     }
 
+    public void addNews(String newsContent) {
+        NewsFeedVO news = NewsFeedVO.initNews(newsContent, mFirebaseUser);
+        mNewsFeedDR.child(String.valueOf(news.getPosedDate())).setValue(news);
+    }
+
     /**
      * Read text from assets folder.
      *

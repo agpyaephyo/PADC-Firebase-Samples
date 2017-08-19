@@ -1,7 +1,8 @@
 package xyz.aungpyaephyo.padc.firebase.data.vo;
 
-import com.google.gson.annotations.SerializedName;
+import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,28 +11,20 @@ import java.util.List;
 
 public class NewsFeedVO {
 
-    @SerializedName("feed_id")
     private long feedId;
 
-    @SerializedName("posted_date")
     private long posedDate;
 
-    @SerializedName("content")
     private String content;
 
-    @SerializedName("image")
     private String image;
 
-    @SerializedName("send_to")
     private int sendToCount;
 
-    @SerializedName("news_author")
     private NewsAuthorVO newsAuthor;
 
-    @SerializedName("likes")
     private List<LikeVO> likes;
 
-    @SerializedName("comments")
     private List<CommentVO> comments;
 
     public long getFeedId() {
@@ -59,10 +52,29 @@ public class NewsFeedVO {
     }
 
     public List<LikeVO> getLikes() {
+        if (likes == null)
+            return new ArrayList<>();
+
         return likes;
     }
 
     public List<CommentVO> getComments() {
+        if (comments == null)
+            return new ArrayList<>();
+
         return comments;
+    }
+
+    public static NewsFeedVO initNews(String newsContent, FirebaseUser firebaseUser) {
+        NewsFeedVO newsFeed = new NewsFeedVO();
+        newsFeed.content = newsContent;
+        newsFeed.posedDate = System.currentTimeMillis() / 1000;
+
+        NewsAuthorVO newsAuthor = new NewsAuthorVO(firebaseUser.getUid(),
+                firebaseUser.getDisplayName(),
+                firebaseUser.getPhotoUrl().toString());
+
+        newsFeed.newsAuthor = newsAuthor;
+        return newsFeed;
     }
 }

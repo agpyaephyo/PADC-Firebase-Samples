@@ -7,11 +7,16 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import xyz.aungpyaephyo.padc.firebase.R;
+import xyz.aungpyaephyo.padc.firebase.data.models.NewsFeedModel;
 
 /**
  * Created by aung on 8/18/17.
@@ -21,6 +26,9 @@ public class AddNewsActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.et_news)
+    EditText etNewsContent;
 
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, AddNewsActivity.class);
@@ -53,5 +61,17 @@ public class AddNewsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick(R.id.btn_add_news)
+    public void onTapAddNews(View view) {
+        String newsContent = etNewsContent.getText().toString();
+        if (TextUtils.isEmpty(newsContent)) {
+            etNewsContent.setError("Need news content to publish.");
+        } else {
+            NewsFeedModel.getInstance().addNews(newsContent);
+            etNewsContent.setText("");
+            onBackPressed();
+        }
     }
 }

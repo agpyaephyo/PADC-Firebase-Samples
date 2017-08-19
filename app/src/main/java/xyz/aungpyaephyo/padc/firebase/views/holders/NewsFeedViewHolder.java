@@ -6,6 +6,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import butterknife.BindView;
 import xyz.aungpyaephyo.padc.firebase.R;
 import xyz.aungpyaephyo.padc.firebase.components.loveanim.LoveAnimView;
@@ -16,6 +19,8 @@ import xyz.aungpyaephyo.padc.firebase.data.vo.NewsFeedVO;
  */
 
 public class NewsFeedViewHolder extends BaseViewHolder<NewsFeedVO> {
+
+    private static final SimpleDateFormat sdfPostedDate = new SimpleDateFormat("MMM dd - hh:mma");
 
     @BindView(R.id.iv_profile)
     ImageView ivProfile;
@@ -45,8 +50,14 @@ public class NewsFeedViewHolder extends BaseViewHolder<NewsFeedVO> {
     @Override
     public void bind(NewsFeedVO data) {
         tvUsername.setText(data.getNewsAuthor().getUserName());
-        //tvPostedDate.setText(itemView.getContext().getString(R.string.tv_format_posted_date, ));
+
+        long ms = data.getPosedDate() * 1000;
+        Date postedDate = new Date(ms);
+        tvPostedDate.setText(itemView.getContext().getString(R.string.tv_format_posted_date,
+                sdfPostedDate.format(postedDate)));
+
         tvFeedMsg.setText(data.getContent());
+
         tvTotalReactions.setText(itemView.getContext().getString(R.string.format_total_reactions,
                 data.getLikes().size(),
                 data.getComments().size(),

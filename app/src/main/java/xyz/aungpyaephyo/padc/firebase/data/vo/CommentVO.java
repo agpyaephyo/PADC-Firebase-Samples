@@ -8,16 +8,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class CommentVO {
 
-    @SerializedName("comment_id")
     private long commentId;
 
-    @SerializedName("user_id")
     private long userId;
 
-    @SerializedName("comment")
     private String comment;
 
-    @SerializedName("timestamp")
     private long timestamp;
 
     public long getCommentId() {

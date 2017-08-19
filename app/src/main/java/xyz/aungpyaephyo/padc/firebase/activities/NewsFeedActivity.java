@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -46,6 +47,9 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
     @BindView(R.id.vp_empty_news_feed)
     EmptyViewPod vpEmptyNewsFeed;
 
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     private NewsFeedsAdapter mNewsFeedsAdapter;
 
     protected GoogleApiClient mGoogleApiClient;
@@ -69,7 +73,7 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
         mNewsFeedsAdapter.setNewData(newsFeed);
         */
 
-        NewsFeedModel.getInstance().loadNewsFeed();
+        swipeRefreshLayout.setRefreshing(true);
 
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("155065313733-1lgn7qgb6teg7q7imb7butvd78md99oh.apps.googleusercontent.com")
@@ -119,6 +123,7 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        NewsFeedModel.getInstance().loadNewsFeed();
     }
 
     @Override
@@ -152,6 +157,8 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
     public void onNewsFeedLoaded(FirebaseEvents.NewsFeedLoadedEvent event) {
         Log.d(FirebaseApp.TAG, "onNewsFeedLoaded - " + event.getNewsFeed().size());
         mNewsFeedsAdapter.setNewData(event.getNewsFeed());
+        swipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.setEnabled(false);
     }
 
     private void signInWithGoogle() {
