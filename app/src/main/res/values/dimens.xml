@@ -38,4 +38,5 @@
     <dimen name="bg_dialog_button_radius">4dp</dimen>
     <dimen name="news_feed_profile_size">60dp</dimen>
     <dimen name="elevation_card">4dp</dimen>
+    <dimen name="toolbar_margin">0dp</dimen>
 </resources>

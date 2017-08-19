@@ -1,6 +1,8 @@
 package xyz.aungpyaephyo.padc.firebase.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -8,6 +10,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -24,7 +33,9 @@ import xyz.aungpyaephyo.padc.firebase.data.models.NewsFeedModel;
 import xyz.aungpyaephyo.padc.firebase.events.FirebaseEvents;
 import xyz.aungpyaephyo.padc.firebase.views.pods.EmptyViewPod;
 
-public class NewsFeedActivity extends AppCompatActivity {
+public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+
+    protected static final int RC_GOOGLE_SIGN_IN = 1236;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -36,6 +47,8 @@ public class NewsFeedActivity extends AppCompatActivity {
     EmptyViewPod vpEmptyNewsFeed;
 
     private NewsFeedsAdapter mNewsFeedsAdapter;
+
+    protected GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +70,16 @@ public class NewsFeedActivity extends AppCompatActivity {
         */
 
         NewsFeedModel.getInstance().loadNewsFeed();
+
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("155065313733-1lgn7qgb6teg7q7imb7butvd78md99oh.apps.googleusercontent.com")
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
+                .enableAutoManage(this /*FragmentActivity*/, this /*OnConnectionFailedListener*/)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
+                .build();
     }
 
     @Override
@@ -82,6 +105,17 @@ public class NewsFeedActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_GOOGLE_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            processGoogleSignInResult(result);
+        }
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
@@ -93,15 +127,61 @@ public class NewsFeedActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
     @OnClick(R.id.fab)
     public void onTapFab(View view) {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+        if (NewsFeedModel.getInstance().isUserSignIn()) {
+            //startActivity(AddNewsActivity.newIntent(getApplicationContext()));
+            startAddNewsActivity();
+        } else {
+            // Not signed in, launch the Sign In activity
+            Snackbar.make(rvNewsFeed, "You need to sign with Google to publish in MM-News.", Snackbar.LENGTH_INDEFINITE).setAction("Sign-In", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    signInWithGoogle();
+                }
+            }).show();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNewsFeedLoaded(FirebaseEvents.NewsFeedLoadedEvent event) {
         Log.d(FirebaseApp.TAG, "onNewsFeedLoaded - " + event.getNewsFeed().size());
         mNewsFeedsAdapter.setNewData(event.getNewsFeed());
+    }
+
+    private void signInWithGoogle() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
+    }
+
+    private void processGoogleSignInResult(GoogleSignInResult signInResult) {
+        if (signInResult.isSuccess()) {
+            // Google Sign-In was successful, authenticate with Firebase
+            GoogleSignInAccount account = signInResult.getSignInAccount();
+            NewsFeedModel.getInstance().authenticateUserWithGoogleAccount(account, new NewsFeedModel.SignInWithGoogleAccountDelegate() {
+                @Override
+                public void onSuccessSignIn(GoogleSignInAccount signInAccount) {
+                    startAddNewsActivity();
+                }
+
+                @Override
+                public void onFailureSignIn(String msg) {
+
+                }
+            });
+        } else {
+            // Google Sign-In failed
+            Log.e(FirebaseApp.TAG, "Google Sign-In failed.");
+            Snackbar.make(rvNewsFeed, "Your Google sign-in failed.", Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    private void startAddNewsActivity() {
+        startActivity(AddNewsActivity.newIntent(getApplicationContext()));
     }
 }
