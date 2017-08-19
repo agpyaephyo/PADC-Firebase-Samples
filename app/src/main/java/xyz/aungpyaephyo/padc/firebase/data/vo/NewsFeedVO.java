@@ -65,10 +65,11 @@ public class NewsFeedVO {
         return comments;
     }
 
-    public static NewsFeedVO initNews(String newsContent, FirebaseUser firebaseUser) {
+    public static NewsFeedVO initNews(String newsContent, String image, FirebaseUser firebaseUser) {
         NewsFeedVO newsFeed = new NewsFeedVO();
         newsFeed.content = newsContent;
         newsFeed.posedDate = System.currentTimeMillis() / 1000;
+        newsFeed.image = image;
 
         NewsAuthorVO newsAuthor = new NewsAuthorVO(firebaseUser.getUid(),
                 firebaseUser.getDisplayName(),

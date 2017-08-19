@@ -39,4 +39,5 @@
     <dimen name="news_feed_profile_size">60dp</dimen>
     <dimen name="elevation_card">4dp</dimen>
     <dimen name="toolbar_margin">0dp</dimen>
+    <dimen name="items_photo_size">150dp</dimen>
 </resources>

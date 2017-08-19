@@ -1,12 +1,14 @@
 package xyz.aungpyaephyo.padc.firebase.data.models;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -18,6 +20,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -33,6 +38,7 @@ import java.util.List;
 import xyz.aungpyaephyo.padc.firebase.FirebaseApp;
 import xyz.aungpyaephyo.padc.firebase.data.vo.NewsFeedVO;
 import xyz.aungpyaephyo.padc.firebase.events.FirebaseEvents;
+import xyz.aungpyaephyo.padc.firebase.utils.FirebaseAppConstants;
 
 /**
  * Created by aung on 8/18/17.
@@ -138,9 +144,32 @@ public class NewsFeedModel {
                 });
     }
 
-    public void addNews(String newsContent) {
-        NewsFeedVO news = NewsFeedVO.initNews(newsContent, mFirebaseUser);
+    public void addNews(String newsContent, String newsPhoto) {
+        NewsFeedVO news = NewsFeedVO.initNews(newsContent, newsPhoto, mFirebaseUser);
         mNewsFeedDR.child(String.valueOf(news.getPosedDate())).setValue(news);
+    }
+
+    public void uploadFile(String fileToUpload, final UploadFileCallback callback) {
+        Uri file = Uri.parse(fileToUpload);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl(FirebaseAppConstants.FIREBASE_STORAGE_BUCKET);
+
+        StorageReference uploadFileRef = storageRef.child(FirebaseAppConstants.UPLOAD_IMAGE_PATH + "/" + file.getLastPathSegment());
+        UploadTask uploadTask = uploadFileRef.putFile(file);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.onUploadFailed(e.getMessage());
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Uri uploadedImageUrl = taskSnapshot.getDownloadUrl();
+                Log.d(FirebaseApp.TAG, "Uploaded Image Url : " + uploadedImageUrl);
+
+                callback.onUploadSucceeded(uploadedImageUrl.toString());
+            }
+        });
     }
 
     /**
@@ -174,5 +203,11 @@ public class NewsFeedModel {
         void onSuccessSignIn(GoogleSignInAccount signInAccount);
 
         void onFailureSignIn(String msg);
+    }
+
+    public interface UploadFileCallback {
+        void onUploadSucceeded(String uploadedPaths);
+
+        void onUploadFailed(String msg);
     }
 }

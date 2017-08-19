@@ -1,5 +1,6 @@
 package xyz.aungpyaephyo.padc.firebase.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +31,7 @@ import butterknife.OnClick;
 import xyz.aungpyaephyo.padc.firebase.FirebaseApp;
 import xyz.aungpyaephyo.padc.firebase.R;
 import xyz.aungpyaephyo.padc.firebase.adapters.NewsFeedsAdapter;
+import xyz.aungpyaephyo.padc.firebase.components.mmfont.MMFontUtils;
 import xyz.aungpyaephyo.padc.firebase.components.rvset.SmartRecyclerView;
 import xyz.aungpyaephyo.padc.firebase.data.models.NewsFeedModel;
 import xyz.aungpyaephyo.padc.firebase.events.FirebaseEvents;

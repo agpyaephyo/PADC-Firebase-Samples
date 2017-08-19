@@ -16,18 +16,17 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
             app:contentInsetStartWithNavigation="@dimen/toolbar_margin"
-            />
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:padding="@dimen/margin_medium_2">
+        android:padding="@dimen/margin_medium_2"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <EditText
             android:id="@+id/et_news"
@@ -35,20 +34,41 @@
             android:layout_height="160dp"
             android:background="@drawable/bg_rounded"
             android:gravity="top"
-            android:padding="@dimen/margin_medium_2"
-            />
-        
+            android:padding="@dimen/margin_medium_2" />
+
+        <FrameLayout
+            android:id="@+id/fl_news_photo"
+            android:layout_width="@dimen/items_photo_size"
+            android:layout_height="@dimen/items_photo_size"
+            android:layout_below="@id/et_news"
+            android:layout_marginTop="@dimen/margin_medium">
+
+            <include
+                android:id="@+id/vp_added_photo"
+                layout="@layout/view_pod_added_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                />
+
+            <include
+                android:id="@+id/vp_add_photo"
+                layout="@layout/view_pod_add_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+
         <Button
             android:id="@+id/btn_add_news"
+            style="@style/AccentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btn_add_news"
-            android:layout_below="@id/et_news"
             android:layout_alignParentRight="true"
-            style="@style/AccentButton"
-            android:textColor="@color/primary_text"
+            android:layout_below="@id/et_news"
             android:layout_marginTop="@dimen/margin_medium"
-            />
+            android:text="@string/btn_add_news"
+            android:textColor="@color/primary_text" />
 
     </RelativeLayout>
 
