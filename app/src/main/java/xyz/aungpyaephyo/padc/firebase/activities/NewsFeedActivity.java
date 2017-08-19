@@ -1,14 +1,14 @@
 package xyz.aungpyaephyo.padc.firebase.activities;
 
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +31,6 @@ import butterknife.OnClick;
 import xyz.aungpyaephyo.padc.firebase.FirebaseApp;
 import xyz.aungpyaephyo.padc.firebase.R;
 import xyz.aungpyaephyo.padc.firebase.adapters.NewsFeedsAdapter;
-import xyz.aungpyaephyo.padc.firebase.components.mmfont.MMFontUtils;
 import xyz.aungpyaephyo.padc.firebase.components.rvset.SmartRecyclerView;
 import xyz.aungpyaephyo.padc.firebase.data.models.NewsFeedModel;
 import xyz.aungpyaephyo.padc.firebase.events.FirebaseEvents;
@@ -40,6 +39,12 @@ import xyz.aungpyaephyo.padc.firebase.views.pods.EmptyViewPod;
 public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     protected static final int RC_GOOGLE_SIGN_IN = 1236;
+
+    private static final String IE_NOTIFICATION_ID = "IE_NOTIFICATION_ID";
+    private static final String IE_LAUNCH_ACTION = "IE_LAUNCH_ACTION";
+
+    private static final int LAUNCH_ACTION_TAP_SAVE_NEWS_NOTI_ACTION = 2222;
+    private static final int LAUNCH_ACTION_TAP_NOTI_BODY = 2223;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -56,6 +61,24 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
     private NewsFeedsAdapter mNewsFeedsAdapter;
 
     protected GoogleApiClient mGoogleApiClient;
+
+    public static Intent newIntent(Context context) {
+        Intent intent = new Intent(context, NewsFeedActivity.class);
+        return intent;
+    }
+
+    public static Intent newIntentSaveNews(Context context, int notificationId) {
+        Intent intent = new Intent(context, NewsFeedActivity.class);
+        intent.putExtra(IE_NOTIFICATION_ID, notificationId);
+        intent.putExtra(IE_LAUNCH_ACTION, LAUNCH_ACTION_TAP_SAVE_NEWS_NOTI_ACTION);
+        return intent;
+    }
+
+    public static Intent newIntentNotiBody(Context context) {
+        Intent intent = new Intent(context, NewsFeedActivity.class);
+        intent.putExtra(IE_LAUNCH_ACTION, LAUNCH_ACTION_TAP_NOTI_BODY);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +110,24 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
                 .enableAutoManage(this /*FragmentActivity*/, this /*OnConnectionFailedListener*/)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
                 .build();
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            int notificationId = bundle.getInt(IE_NOTIFICATION_ID);
+            if (notificationId != 0) {
+                dismissNotification(notificationId);
+            }
+
+            int launchAction = bundle.getInt(IE_LAUNCH_ACTION);
+            switch (launchAction) {
+                case LAUNCH_ACTION_TAP_SAVE_NEWS_NOTI_ACTION:
+                    Snackbar.make(rvNewsFeed, "\"Save News\" from notification action!", Snackbar.LENGTH_SHORT).show();
+                    break;
+                case LAUNCH_ACTION_TAP_NOTI_BODY:
+                    Snackbar.make(rvNewsFeed, "Tapped notification body", Snackbar.LENGTH_SHORT).show();
+                    break;
+            }
+        }
     }
 
     @Override
@@ -194,4 +235,11 @@ public class NewsFeedActivity extends AppCompatActivity implements GoogleApiClie
     private void startAddNewsActivity() {
         startActivity(AddNewsActivity.newIntent(getApplicationContext()));
     }
+
+    private void dismissNotification(int notificationID) {
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+        notificationManager.cancel(notificationID);
+    }
+
+
 }

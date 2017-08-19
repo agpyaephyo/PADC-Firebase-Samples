@@ -27,4 +27,5 @@
     <string name="screen_title_add_news">Publish News</string>
 
     <string name="lbl_add_photo">သတင်းဓါတ်ပုံ</string>
+    <string name="noti_action_save_news">Save News</string>
 </resources>
