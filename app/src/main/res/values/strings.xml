@@ -23,6 +23,8 @@
 အခွန်အယူခံအဖွဲ့အား ၁၉၅၄၊ ၁၉၇၂၊ ၁၉၇၆၊ ၁၉၈၉၊ ၂၀၁၇ ခုနှစ်များတွင် အစိုးရ အဆက်ဆက် အမိန့်ကြော်ငြာစာထုတ်ပြန်၍ တာဝန်နှင့်လုပ်ပိုင်ခွင့်များ သတ်မှတ်ပြီး ဆောင်ရွက်ခဲ့ခြင်းဖြစ်ကြောင်း၊ အခွန်အယူခံ အဖွဲ့ရုံးသည် ပြည်တွင်းအခွန်များဦးစီးဌာနမှ အခွန်စည်းကြပ်ကောက်ခံမှုများ၊ အကောက်ခွန်ဦးစီးဌာနမှ ကုန်ပစ္စည်းများနှင့် မော်တော်ယာဉ်များအား ပြည်သူ့ဘဏ္ဍာအဖြစ် သိမ်းဆည်းမှုများ၊ ဒဏ်ငွေတပ်ရိုက်ခြင်းများအပေါ် ကျေနပ်မှုမရှိသည့် အခွန်ထမ်းပြည်သူများ၊ ကုမ္ပဏီများ၊ သမဝါယမအသင်းများ၊ ကုန်ပစ္စည်းပိုင်ရှင်များနှင့် ယာဉ်ပိုင်ရှင်များစသည့် တစ်ဦးချင်းပုဂ္ဂိုလ်တို့က အခွန်အကောက်ဆိုင်ရာ ဥပဒေများနှင့်အညီ အခွန်အယူခံမှုအဖြစ် လျှောက်ထားတင်သွင်းလာသော အယူခံမှု၊ ပြင်ဆင်မှု၊ ပြန်လည်သုံးသပ်မှုနှင့် လွှဲအပ်မှုများကို တည်ဆဲအခွန်အကောက်ဥပဒေ၊ နည်းဥပဒေ၊ စည်းမျဉ်းများနှင့်အညီ စစ်ဆေးကြားနာဆုံးဖြတ်ပေးလျက်ရှိကြောင်း ဒုတိယဝန်ကြီးက လွှတ်တော်၌ ရှင်းလင်းခဲ့သည်။</string>
 
     <string name="dummy_text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus</string>
-    <string name="btn_add_news">Add News</string>
+    <string name="btn_add_news">Publish</string>
     <string name="screen_title_add_news">Publish News</string>
+
+    <string name="lbl_add_photo">သတင်းဓါတ်ပုံ</string>
 </resources>

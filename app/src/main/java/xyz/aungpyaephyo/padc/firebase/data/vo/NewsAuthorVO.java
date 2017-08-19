@@ -8,16 +8,22 @@ import com.google.gson.annotations.SerializedName;
 
 public class NewsAuthorVO {
 
-    @SerializedName("user_id")
-    private long userId;
+    private String userId;
 
-    @SerializedName("user_name")
     private String userName;
 
-    @SerializedName("profile_image")
     private String profileImage;
 
-    public long getUserId() {
+    public NewsAuthorVO() {
+    }
+
+    public NewsAuthorVO(String userId, String userName, String profileImage) {
+        this.userId = userId;
+        this.userName = userName;
+        this.profileImage = profileImage;
+    }
+
+    public String getUserId() {
         return userId;
     }
 
