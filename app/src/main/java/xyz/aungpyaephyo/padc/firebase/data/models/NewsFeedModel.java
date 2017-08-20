@@ -105,9 +105,9 @@ public class NewsFeedModel {
                         @Override
                         public int compare(NewsFeedVO nf1, NewsFeedVO nf2) {
                             if (nf1.getPosedDate() > nf2.getPosedDate())
-                                return 1;
-                            else if (nf1.getPosedDate() < nf2.getPosedDate())
                                 return -1;
+                            else if (nf1.getPosedDate() < nf2.getPosedDate())
+                                return 1;
 
                             return 0;
                         }
