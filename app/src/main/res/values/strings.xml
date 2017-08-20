@@ -29,4 +29,9 @@
     <string name="lbl_add_photo">သတင်းဓါတ်ပုံ</string>
     <string name="noti_action_save_news">Save News</string>
     <string name="feed_action_love">Love</string>
+    <string name="action_invite_to_app">Invite to App</string>
+
+    <string name="invitation_title">Join MM-News</string>
+    <string name="invitation_message">Be informed on the news that matter to Myanmar people</string>
+    <string name="invitation_cta">I want to join</string>
 </resources>
