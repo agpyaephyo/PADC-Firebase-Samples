@@ -232,6 +232,7 @@ public class NewsFeedActivity extends AppCompatActivity
                 }
             }).show();
         }
+        //throw new NullPointerException("test crashlytics");
     }
 
     @OnClick(R.id.iv_invite_to_app)

@@ -4,7 +4,7 @@
 
     <string name="msg_default_empty">သက်ဆိုင်ရာ data များ ပြရန် မရှိသေးပါ</string>
     <string name="launcher_name">MM-News</string>
-    <string name="screen_title_newsfeed">MM-News (news for Myanmar people)</string>
+    <string name="screen_title_newsfeed">MM-News</string>
 
     <string name="tv_format_posted_date"><![CDATA[Posted At : <xliff:g id="posted_date">%1$s</xliff:g>]]></string>
     <string name="format_total_reactions"><![CDATA[<xliff:g id="like_count">%1$d</xliff:g> Likes - <xliff:g id="comment_count">%2$d</xliff:g> Comments - Sent to <xliff:g id="sent_to_count">%3$d</xliff:g> people]]></string>

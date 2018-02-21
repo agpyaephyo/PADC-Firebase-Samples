@@ -35,7 +35,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import xyz.aungpyaephyo.padc.firebase.FirebaseApp;
 import xyz.aungpyaephyo.padc.firebase.data.vo.NewsFeedVO;
@@ -129,7 +131,8 @@ public class NewsFeedModel {
         return mFirebaseUser != null;
     }
 
-    public void authenticateUserWithGoogleAccount(final GoogleSignInAccount signInAccount, final SignInWithGoogleAccountDelegate delegate) {
+    public void authenticateUserWithGoogleAccount(final GoogleSignInAccount signInAccount,
+                                                  final SignInWithGoogleAccountDelegate delegate) {
         Log.d(FirebaseApp.TAG, "signInAccount Id :" + signInAccount.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
         mFirebaseAuth.signInWithCredential(credential)
