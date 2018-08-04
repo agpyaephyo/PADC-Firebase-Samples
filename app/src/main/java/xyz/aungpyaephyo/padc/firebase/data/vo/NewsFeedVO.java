@@ -71,7 +71,7 @@ public class NewsFeedVO {
         newsFeed.posedDate = System.currentTimeMillis() / 1000;
         newsFeed.image = image;
 
-        NewsAuthorVO newsAuthor = new NewsAuthorVO(firebaseUser.getUid(),
+        NewsAuthorVO newsAuthor = new NewsAuthorVO(Long.parseLong(firebaseUser.getUid()),
                 firebaseUser.getDisplayName(),
                 firebaseUser.getPhotoUrl().toString());
 
