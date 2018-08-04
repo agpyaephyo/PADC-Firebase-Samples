@@ -157,9 +157,9 @@ public class NewsFeedModel {
         LikeVO newLike = LikeVO.initLike(mFirebaseUser.getUid());
         mNewsFeedDR.child(String.valueOf(newsId)).child("likes")
                 .child(String.valueOf(newLike.getLikeId())).setValue(newLike);
-
+        
         mNewsFeedDR.child(String.valueOf(newsId)).child("likes")
-                .child(String.valueOf(newLike.getLikeId())).removeValue()
+                .child(String.valueOf(newLike.getLikeId())).removeValue();
     }
 
     public void addLike(NewsFeedVO newsFeed) {
