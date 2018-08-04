@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import xyz.aungpyaephyo.padc.firebase.FirebaseApp;
+import xyz.aungpyaephyo.padc.firebase.data.vo.LikeVO;
 import xyz.aungpyaephyo.padc.firebase.data.vo.NewsFeedVO;
 import xyz.aungpyaephyo.padc.firebase.events.FirebaseEvents;
 import xyz.aungpyaephyo.padc.firebase.utils.FirebaseAppConstants;
@@ -121,6 +122,9 @@ public class NewsFeedModel {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        mFirebaseAuth = FirebaseAuth.getInstance();
+                        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
                         Log.d(FirebaseApp.TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
 
                         // If sign in fails, display a message to the user. If sign in succeeds
@@ -147,6 +151,21 @@ public class NewsFeedModel {
     public void addNews(String newsContent, String newsPhoto) {
         NewsFeedVO news = NewsFeedVO.initNews(newsContent, newsPhoto, mFirebaseUser);
         mNewsFeedDR.child(String.valueOf(news.getPosedDate())).setValue(news);
+    }
+
+    public void addLike(long newsId) {
+        LikeVO newLike = LikeVO.initLike(mFirebaseUser.getUid());
+        mNewsFeedDR.child(String.valueOf(newsId)).child("likes")
+                .child(String.valueOf(newLike.getLikeId())).setValue(newLike);
+
+        mNewsFeedDR.child(String.valueOf(newsId)).child("likes")
+                .child(String.valueOf(newLike.getLikeId())).removeValue()
+    }
+
+    public void addLike(NewsFeedVO newsFeed) {
+        LikeVO newLike = LikeVO.initLike(mFirebaseUser.getUid());
+        newsFeed.addLike(newLike);
+        mNewsFeedDR.child(String.valueOf(newsFeed.getPosedDate())).setValue(newsFeed);
     }
 
     public void uploadFile(String fileToUpload, final UploadFileCallback callback) {

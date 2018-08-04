@@ -71,11 +71,17 @@ public class NewsFeedVO {
         newsFeed.posedDate = System.currentTimeMillis() / 1000;
         newsFeed.image = image;
 
-        NewsAuthorVO newsAuthor = new NewsAuthorVO(Long.parseLong(firebaseUser.getUid()),
+        newsFeed.newsAuthor = new NewsAuthorVO(firebaseUser.getUid(),
                 firebaseUser.getDisplayName(),
                 firebaseUser.getPhotoUrl().toString());
 
-        newsFeed.newsAuthor = newsAuthor;
         return newsFeed;
+    }
+
+    public void addLike(LikeVO newLike) {
+        if(likes == null) {
+            likes = new ArrayList<>();
+        }
+        likes.add(newLike);
     }
 }
